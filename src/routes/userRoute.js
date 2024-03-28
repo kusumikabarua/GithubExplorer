@@ -3,8 +3,9 @@ const userController=require('../controllers/userController');
 
 const router = express.Router();
 
-router.get('/user/:user', userController.getUser);
+
 router.get('/save-user/:user', userController.saveUser);
+router.get('/find-mutual-followers/:user', userController.findMutualFollowers);
 
 
 

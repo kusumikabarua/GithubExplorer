@@ -1,5 +1,5 @@
 require("dotenv").config({path :"src/.env"});
-const middlewares = require('./middlewares/middlewares');
+
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
@@ -9,7 +9,7 @@ const userRoute = require('./routes/userRoute');
 const cors =require("cors");
 app.use(cors());
 app.use(express.json());
-app.use(middlewares.setHeaders);
+
 app.use('/github_api', userRoute);
 
 mongoose

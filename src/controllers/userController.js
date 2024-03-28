@@ -1,20 +1,8 @@
-const { generateOptions } = require("../utils/utils");
-const { saveUserDetails } = require('../services/userService');
-const https = require("https");
 
-const getUser = async function (req, res) {
-  const user = req.params.user;
-  const options = generateOptions("/users/" + user);
+const { saveUserDetails,findMutualFollowerDetails } = require('../services/userService');
 
-  https
-    .get(options, function (apiResponse) {
-      apiResponse.pipe(res);
-    })
-    .on("error", (e) => {
-      console.log(e);
-      res.status(500).send(constants.error_message);
-    });
-};
+
+
 const saveUser = async function (req, res) {
   try {
     const user = req.params.user;
@@ -31,12 +19,12 @@ const findMutualFollowers = async function (req, res) {
   try {
     const user = req.params.user;
 
-    const savedUser = await findMutualFollowers(user);
+    const friends = await findMutualFollowerDetails(user);
     
-    res.status(201).json(savedUser);
+    res.status(201).json(friends);
   } catch (error) {
     res.status(501).json({ message: error.message });
   }
 };
 
-module.exports = {  saveUser,getUser ,findMutualFollowers};
+module.exports = {  saveUser ,findMutualFollowers};
