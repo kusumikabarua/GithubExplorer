@@ -64,13 +64,13 @@ async function findMutualFollowerDetails(user) {
     }
     const responsefollowers = await fetch(followers_url);
     const followers = await responsefollowers.json();
-    //console.log(followers);
+;
     const responsefollowing = await fetch(
       process.env.API_URI + user + "/following"
     );
     const following = await responsefollowing.json();
     let friends = [];
-    //console.log(following);
+   
     if (followers && following) {
       for (let i = 0; i < following.length; i++) {
         let followersId = followers.find(
@@ -82,7 +82,7 @@ async function findMutualFollowerDetails(user) {
       }
     }
 
-    console.log(friends);
+
     if (!friends) {
       throw new Error("No friends");
     }
@@ -100,7 +100,7 @@ async function findMutualFollowerDetails(user) {
 }
 const deleteUserDetails = async (username) => {
     try {
-      console.log("Delete");
+
       const deletedUser = await User.findOneAndUpdate(
         { username: username },
         { $set: {isDeleted:true} },
@@ -115,7 +115,7 @@ const deleteUserDetails = async (username) => {
 
   const updateUserDetails = async (username,updatedData) => {
     try {
-      //console.log("Update",updatedData);
+
       const updatedUser = await User.findOneAndUpdate(
         { username: username },
         { $set: updatedData },
@@ -130,7 +130,7 @@ const deleteUserDetails = async (username) => {
   const listUserDetails= async (sortBy) => {
     
     try {
-        console.log("listusers");
+        
         if(sortBy){
             return  await User.find({ isDeleted: false} ).sort({ [sortBy]: -1 });
         }else{
@@ -142,10 +142,38 @@ const deleteUserDetails = async (username) => {
       throw error;
     }
   };
+
+  const searchUserDetails= async (searchCriteria) => {
+    
+
+    try {
+        let filter = { isDeleted: false};
+       
+       
+        if(searchCriteria){
+            for (const [key, value] of Object.entries(searchCriteria)) {
+                if(key ==="followers" ||key ==="following"||key ==="numberOfPublicRepos"){
+                    filter[key]=value;
+                }else{
+                    filter[key]=  {$regex:value, $options: 'i'}
+                }        
+                
+              }
+             
+            return  await User.find(filter);
+        }
+     
+      
+    } catch (error) {
+      throw error;
+    }
+  };
+
 module.exports = {
   saveUserDetails,
   findMutualFollowerDetails,
   deleteUserDetails,
   updateUserDetails,
-  listUserDetails
+  listUserDetails,
+  searchUserDetails
 };

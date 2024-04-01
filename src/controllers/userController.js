@@ -3,7 +3,8 @@ const {
   findMutualFollowerDetails,
   deleteUserDetails,
   updateUserDetails,
-  listUserDetails
+  listUserDetails,
+  searchUserDetails
 } = require("../services/userService");
 
 const saveUser = async function (req, res) {
@@ -66,5 +67,18 @@ const listUsers = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const searchUsers = async (req, res) => {
+  try {
+   
+    const searchCriteria =req.query;
+    const users = await searchUserDetails(searchCriteria);
+    if (!users) {
+      res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-module.exports = { saveUser, findMutualFollowers, deleteUser ,updateUser,listUsers };
+module.exports = { saveUser, findMutualFollowers, deleteUser ,updateUser,listUsers,searchUsers };
