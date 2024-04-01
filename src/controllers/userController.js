@@ -2,7 +2,8 @@ const {
   saveUserDetails,
   findMutualFollowerDetails,
   deleteUserDetails,
-  updateUserDetails
+  updateUserDetails,
+  listUserDetails
 } = require("../services/userService");
 
 const saveUser = async function (req, res) {
@@ -55,4 +56,15 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-module.exports = { saveUser, findMutualFollowers, deleteUser ,updateUser };
+const listUsers = async (req, res) => {
+  try {
+   
+    const {sortBy} =req.query;
+    const users = await listUserDetails(sortBy);
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { saveUser, findMutualFollowers, deleteUser ,updateUser,listUsers };

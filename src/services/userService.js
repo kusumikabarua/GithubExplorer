@@ -127,11 +127,25 @@ const deleteUserDetails = async (username) => {
       throw error;
     }
   };
-
-
+  const listUserDetails= async (sortBy) => {
+    
+    try {
+        console.log("listusers");
+        if(sortBy){
+            return  await User.find({ isDeleted: false} ).sort({ [sortBy]: -1 });
+        }else{
+            return  await User.find({ isDeleted: false} );
+        }
+     
+      
+    } catch (error) {
+      throw error;
+    }
+  };
 module.exports = {
   saveUserDetails,
   findMutualFollowerDetails,
   deleteUserDetails,
-  updateUserDetails
+  updateUserDetails,
+  listUserDetails
 };
