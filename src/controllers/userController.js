@@ -1,5 +1,5 @@
 
-const { saveUserDetails,findMutualFollowerDetails } = require('../services/userService');
+const { saveUserDetails,findMutualFollowerDetails,deleteUserDetails } = require('../services/userService');
 
 
 
@@ -26,5 +26,17 @@ const findMutualFollowers = async function (req, res) {
     res.status(501).json({ message: error.message });
   }
 };
+const deleteUser = async(req,res)=>{
+  try {
+    const user = req.params.user;
+  const deletedUser = await deleteUserDetails(user);
+  if(!deletedUser){
+      res.status(404).json({ message: "User not found" });
+  }
+  res.status(200).json(deletedUser);
+} catch (error) {
+  res.status(500).json({ message: error.message });
+}
 
-module.exports = {  saveUser ,findMutualFollowers};
+}
+module.exports = {  saveUser,findMutualFollowers,deleteUser};

@@ -98,8 +98,23 @@ async function findMutualFollowerDetails(user) {
     throw error;
   }
 }
+const deleteUserDetails = async (username) => {
+    try {
+      console.log("Delete");
+      const deletedUser = await User.findOneAndUpdate(
+        { username: username },
+        { $set: {isDeleted:true} },
+        { new: true }
+      );
+  
+      return deletedUser;
+    } catch (error) {
+      throw error;
+    }
+  };
 
 module.exports = {
   saveUserDetails,
   findMutualFollowerDetails,
+  deleteUserDetails
 };
