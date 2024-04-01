@@ -113,8 +113,25 @@ const deleteUserDetails = async (username) => {
     }
   };
 
+  const updateUserDetails = async (username,updatedData) => {
+    try {
+      //console.log("Update",updatedData);
+      const updatedUser = await User.findOneAndUpdate(
+        { username: username },
+        { $set: updatedData },
+        { new: true }
+      );
+  
+      return updatedUser;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
 module.exports = {
   saveUserDetails,
   findMutualFollowerDetails,
-  deleteUserDetails
+  deleteUserDetails,
+  updateUserDetails
 };
